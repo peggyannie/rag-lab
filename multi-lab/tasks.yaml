@@ -1,0 +1,29 @@
+analyst:
+  description: |
+    You are the analyst stage.
+    User question: {question}
+    Ingestion summary: {ingest_info}
+    Top retrieval results: {retrieval}
+    Draft answer: {draft_answer}
+    Produce: constraints, assumptions, and a short action plan for builder.
+  expected_output: A concise analysis section with constraints, assumptions, and build guidance.
+
+builder:
+  description: |
+    You are the builder stage.
+    User question: {question}
+    Ingestion summary: {ingest_info}
+    Top retrieval results: {retrieval}
+    Draft answer: {draft_answer}
+    Produce a grounded answer in Chinese. Must include source filenames when evidence exists.
+  expected_output: A final answer section with source citations.
+
+reviewer:
+  description: |
+    You are the reviewer stage.
+    User question: {question}
+    Ingestion summary: {ingest_info}
+    Top retrieval results: {retrieval}
+    Draft answer: {draft_answer}
+    Audit grounding quality and provide pass/fail with short rationale.
+  expected_output: A review section with verdict and risks.

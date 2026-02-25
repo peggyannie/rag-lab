@@ -1,0 +1,19 @@
+[project]
+name = "multi-lab"
+version = "0.1.0"
+description = "CrewAI-based multi-agent RAG MVP"
+requires-python = ">=3.10"
+dependencies = [
+  "crewai>=0.5.0,<0.6.0",
+  "openai>=1.0.0",
+  "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

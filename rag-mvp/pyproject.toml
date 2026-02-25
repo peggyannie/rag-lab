@@ -1,0 +1,19 @@
+[project]
+name = "rag-lab-mvp"
+version = "0.1.0"
+description = "CLI-first RAG MVP with local/openai provider modes"
+requires-python = ">=3.10"
+dependencies = [
+  "chromadb>=0.5,<0.6",
+  "openai>=1.0.0",
+  "python-dotenv>=1.0.0",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

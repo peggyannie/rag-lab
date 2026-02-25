@@ -1,0 +1,25 @@
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+.venv/
+.venv*/
+venv/
+
+# Local environment files
+.env
+.env.local
+
+# Runtime storage and local DB artifacts
+storage/
+chroma_db/
+*.db
+*.sqlite
+*.sqlite3
+*.jsonl
+
+# Project-specific runtime files
+multi-lab/storage/
+rag-mvp/chroma_db/
