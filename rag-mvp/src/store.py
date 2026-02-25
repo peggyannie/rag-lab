@@ -8,11 +8,26 @@ import re
 from typing import Dict, List
 
 
-TOKEN_RE = re.compile(r"\w+", re.UNICODE)
+WORD_RE = re.compile(r"[A-Za-z0-9_]+")
+CJK_SPAN_RE = re.compile(r"[\u4e00-\u9fff]+")
 
 
 def _tokenize(text: str) -> List[str]:
-    return [token.lower() for token in TOKEN_RE.findall(text)]
+    lowered = text.lower()
+    tokens: List[str] = [token for token in WORD_RE.findall(lowered)]
+
+    # Add Chinese character n-grams to improve retrieval robustness for
+    # different wordings that share key terms but not exact full-string match.
+    for span in CJK_SPAN_RE.findall(lowered):
+        if len(span) == 1:
+            tokens.append(span)
+            continue
+        for n in (2, 3):
+            if len(span) < n:
+                continue
+            for i in range(len(span) - n + 1):
+                tokens.append(span[i : i + n])
+    return tokens
 
 
 def _vectorize(text: str) -> Dict[str, float]:
@@ -66,6 +81,7 @@ class LocalVectorStore:
                 "source": str(chunk["source"]),
                 "chunk_index": int(chunk["chunk_index"]),
                 "vector": _vectorize(text),
+                "source_vector": _vectorize(Path(str(chunk["source"])).stem),
             }
             added += 1
         self._persist()
@@ -74,11 +90,20 @@ class LocalVectorStore:
     def count(self) -> int:
         return len(self.rows)
 
+    def clear(self) -> None:
+        self.rows = {}
+        self._persist()
+
     def query(self, question: str, top_k: int = 3) -> List[Dict[str, object]]:
         qvec = _vectorize(question)
         scored: List[Dict[str, object]] = []
         for row in self.rows.values():
-            score = _cosine(qvec, row["vector"])
+            text_score = _cosine(qvec, row["vector"])
+            source_vec = row.get("source_vector")
+            if source_vec is None:
+                source_vec = _vectorize(Path(str(row["source"])).stem)
+            source_score = _cosine(qvec, source_vec)
+            score = 0.85 * text_score + 0.15 * source_score
             scored.append(
                 {
                     "id": row["id"],
