@@ -1,8 +1,5 @@
 # rag-lab
 
-Workspace contains two RAG projects:
+Workspace contains two labs:
 
-- `multi-lab/` (primary): CrewAI-based true multi-agent workflow (`analyst -> builder -> reviewer`)
-- `rag-mvp/` (reference): single-process baseline MVP
-
-Use `multi-lab/` for current development and execution.
+- `rag-mvp/` : single-process baseline MVP
