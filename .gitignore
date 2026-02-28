@@ -25,3 +25,4 @@ chroma_db/
 # Project-specific runtime files
 multi-lab/storage/
 rag-mvp/chroma_db/
+rag-mvp/data/obsidian/
